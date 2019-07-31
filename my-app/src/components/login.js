@@ -4,8 +4,9 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
-
 import { Link } from 'react-router-dom';
+import Icon from '../images/avatar.png'
+import Background from '../images/background.jpg'
 
 
 
@@ -17,12 +18,14 @@ const signInstyle = {
    padding:'17px',
    maxWidth: '357px',
    height:'325px',
-   border:'2px solid red',
-   marginTop:'130px',
   },
-  'centerStyle':{
-    marginTop: '65px',
-   },
+  'bG':{
+    backgroundPosition: 'center',
+    backgroundSize:'cover',
+    backgroundImage: `url(${Background})`,
+    height:'1000px',
+  },
+
    'warning': {
     color: 'red',
     fontSize: '10px',
@@ -42,7 +45,15 @@ const signInstyle = {
     width:'100%',
     height:'70px',
     marginTop:'25px',
-  }
+  },
+  'imgs':{
+    marginTop: '65px',
+    height:'100px',
+    width:'100px',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 }
  
 
@@ -52,23 +63,23 @@ constructor(props){
   super(props)
 
   this.state={
-    email:'',
+    user:'',
     password:'',
-    emailError:false,
+    userError:false,
     passError:false,
   }
   this.handlePassword=this.handlePassword.bind(this)
-  this.handleEmail=this.handleEmail.bind(this)
+  this.handleuserName=this.handleuserName.bind(this)
 }
 
-handleEmail(e){
-  this.setState({email: e.target.value})
+handleuserName(e){
+  this.setState({user: e.target.value})
   var input=e.target.value;
   if (input.length){
-    this.setState({emailError:false})
+    this.setState({userError:false})
   }
   else{
-    this.setState({emailError:true})
+    this.setState({userError:true})
   }
 
 }
@@ -88,7 +99,7 @@ handlePassword(e){
 render(){
   const {classes}=this.props
  return (
- 
+ <div className={classes.bG}>
    <div className={classes.centerStyle}>
      <Grid
        container
@@ -97,9 +108,8 @@ render(){
        alignItems="center"
 
        >
-       
+       <img src={Icon} className={classes.imgs} alt=""/>
        <Paper  className={classes.signIn}>
-        
        <form onSubmit={this.handleLogin}>
         <div className={classes.cont}>
         
@@ -108,18 +118,18 @@ render(){
            required
            fullWidth
            margin="normal"
-           label="Email Address"
+           label="Username"
            className="text-field"
-           value={this.state.email}
-           onBlur={this.handleEmail}
-           onChange={this.handleEmail}
-           error={this.state.emailError}
+           value={this.state.user}
+           onBlur={this.handleuserName}
+           onChange={this.handleuserName}
+           error={this.state.userError}
       
         /> 
-        {this.state.emailError ? (
+        {this.state.userError ? (
                  <React.Fragment>
                   <p className={classes.warning}>
-                    Email is required
+                    Username is required
                   </p>
                   </React.Fragment>
                   ) : ( 
@@ -165,7 +175,7 @@ render(){
            
            <Grid container style={{marginTop:'10px'}}>
             <Grid item style={{marginLeft:'50px'}}>
-              <Link to={'./address'} variant="body2">
+              <Link to={'./register'} variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -176,7 +186,7 @@ render(){
        
    </Grid>
    </div>
- 
+   </div>
  );
 }
 }

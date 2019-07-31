@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import Addressbook from '../src/components/addressBook';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

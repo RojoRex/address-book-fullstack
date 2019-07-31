@@ -1,0 +1,29 @@
+{
+  "name": "address-book-fullstack",
+  "version": "1.0.0",
+  "description": "For this project you'll be crafting an Address Book application. You'll be responsible for the user interface and its functionality, along with implementing a backend API to persist the data to a database and authorize users.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "node-pg-migrate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RojoRex/address-book-fullstack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RojoRex/address-book-fullstack/issues"
+  },
+  "homepage": "https://github.com/RojoRex/address-book-fullstack#readme",
+  "dependencies": {
+    "argon2": "^0.24.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "massive": "^5.11.2",
+    "node-pg-migrate": "^3.21.1",
+    "pg": "^7.12.0"
+  }
+}
