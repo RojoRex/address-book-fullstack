@@ -20,6 +20,7 @@
   "homepage": "https://github.com/RojoRex/address-book-fullstack#readme",
   "dependencies": {
     "argon2": "^0.24.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "massive": "^5.11.2",
