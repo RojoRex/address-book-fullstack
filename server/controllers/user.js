@@ -17,7 +17,7 @@ function register(req, res) {
           password: hash,
         },
         {
-          fields: ['id','lastname','firstname', 'username',],
+          fields: ['id','lastname','firstname', 'username','password',],
         }
       );
     })
@@ -41,7 +41,7 @@ function login(req, res) {
         username,
       },
       {
-        fields: ['id','lastname','firstname', 'username', 'password'],
+        fields: ['id','username', 'password'],
       }
     )
     .then(user => {
@@ -55,7 +55,7 @@ function login(req, res) {
         }
 
         const token = jwt.sign({ userId: user.id }, secret);
-        delete user.password; // remove password hash from returned user object
+        delete user.password; 
         res.status(200).json({ ...user, token });
       });
     })

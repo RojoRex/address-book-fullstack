@@ -7,6 +7,7 @@ import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Icon from '../images/avatar.png'
 import Background from '../images/background.jpg'
+import axios from 'axios';
 
 
 
@@ -70,6 +71,7 @@ constructor(props){
   }
   this.handlePassword=this.handlePassword.bind(this)
   this.handleuserName=this.handleuserName.bind(this)
+  this.handleLogin=this.handleLogin.bind(this)
 }
 
 handleuserName(e){
@@ -94,6 +96,20 @@ handlePassword(e){
     this.setState({passError:true})
   }
 }
+
+handleLogin(e){
+  e.preventDefault();
+
+  axios.post("http://localhost:3001/api/login",{
+    username:this.state.user,
+    password:this.state.password
+  })
+  .then(res=>{
+    console.log(res);
+    
+  })
+}
+
 
 
 render(){
@@ -171,7 +187,7 @@ render(){
           </div>
         
           <div className={classes.bBox}>
-           <Button variant="contained" color="primary"  style={{backgroundColor:'#607C98',width:'320px',marginTop:'10px'}} type="submit">Log In</Button>
+           <Button variant="contained" color="primary"  style={{backgroundColor:'#607C98',width:'320px',marginTop:'10px'}} type="submit" onClick={this.handleLogin}>Log In</Button>
            
            <Grid container style={{marginTop:'10px'}}>
             <Grid item style={{marginLeft:'50px'}}>
