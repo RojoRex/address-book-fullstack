@@ -105,8 +105,17 @@ handleLogin(e){
     password:this.state.password
   })
   .then(res=>{
-    console.log(res);
-    
+    if(res.data.error ==="Invalid username" || res.data.error ==="Incorrect password"){
+
+      alert(res.data.error)
+    }else{
+      alert("Log in accepted")
+      this.props.history.replace("/addressbook");
+
+      console.log(res)
+      localStorage.setItem('token', res.data.token)
+
+    }
   })
 }
 

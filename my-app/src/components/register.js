@@ -17,7 +17,7 @@ const signInstyle = {
   'signIn':{
    margin:'15px auto',
    padding:'17px',
-   maxWidth: '557px',
+   maxWidth: '550px',
    height:'395px',
   },
   'bG':{
@@ -138,8 +138,10 @@ handlesubmit(e){
     password:this.state.password
   })
   .then(res=>{
-    console.log(res);
-    
+    alert('You have created a new account')
+    this.props.history.replace("/");
+    console.log(res)
+    localStorage.setItem('token', res.data.token)
   })
 }
 

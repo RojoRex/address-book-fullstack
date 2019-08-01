@@ -61,7 +61,7 @@ function login(req, res) {
     })
     .catch(err => {
       if (['Invalid username', 'Incorrect password'].includes(err.message)) {
-        res.status(400).json({ error: err.message });
+        res.status(200).json({ error: err.message });
       } else {
         console.error(err);
         res.status(500).end();
