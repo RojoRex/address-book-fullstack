@@ -138,10 +138,7 @@ handlesubmit(e){
     password:this.state.password
   })
   .then(res=>{
-    alert('You have created a new account')
     this.props.history.replace("/");
-    console.log(res)
-    localStorage.setItem('token', res.data.token)
   })
 }
 

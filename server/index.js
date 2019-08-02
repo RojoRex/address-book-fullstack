@@ -6,6 +6,8 @@ const cors = require("cors");
 const secret = require('../secret.js');
 
 const useraccount = require('./controllers/user.js');
+const adddressbook = require('./controllers/address.js');
+
 
 massive({
   host: 'localhost',
@@ -20,8 +22,13 @@ massive({
   app.use(cors());
   app.use(express.json());
 
+  //users
   app.post('/api/register', useraccount.register);
   app.post('/api/login', useraccount.login);
+
+  //addressbook
+  app.post('/api/addressbook',adddressbook.addNewaddress)
+  app.get('/api/contacts', adddressbook.getList);
 
   app.get('/api/protected/data', (req, res) => {
     if (!req.headers.authorization) {

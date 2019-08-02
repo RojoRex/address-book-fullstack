@@ -10,7 +10,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
+import axios from 'axios';
+import Table from './contactlist'
+
 
 
 
@@ -34,7 +36,19 @@ constructor(props){
   super (props)
   this.state = {
     open: false,
+    firstname:'',
+    lastname:'',
+    email:'',
+    city:'',
+    stateprob:'',
+    postal:'',
+    country:'',
+    homephone:'',
+    mobilephone:'',
+    workphone:'',
   };
+  this.handleInput=this.handleInput.bind(this)
+  this.handlecreatContact=this.handlecreatContact.bind(this)
 }
 
   handleClickOpen = () => {
@@ -54,6 +68,32 @@ constructor(props){
 
   }
 
+  handleInput=input=>e=>{
+    this.setState({[input]:e.target.value,})
+  }
+
+
+  handlecreatContact(e){
+    e.preventDefault();
+    axios.post("http://localhost:3001/api/addressbook",{
+      firstname:this.state.firstname,
+      lastaname:this.state.lastname,
+      email:this.state.email,
+      city:this.state.city,
+      stateprob:this.state.stateprob,
+      postal:this.state.postal,
+      country:this.state.country,
+      homephone:this.state.homephone,
+      mobilephone:this.state.mobilephone,
+      workphone:this.state.workphone,
+    })
+    .then(res=>{
+      console.log(res.data)
+    })
+
+  }
+
+
   render(){
       const {classes}=this.props
     return(
@@ -69,9 +109,9 @@ constructor(props){
           <Button onClick={(e) => this.logout(e)  } color="inherit">Log out</Button>
         </Toolbar>
       </AppBar>
-
+      <Table/>
+      <form onSubmit={this.handlecreatContact}>
       <Dialog
-          onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
         >
@@ -89,7 +129,10 @@ constructor(props){
                 fullWidth
                 id="firstName"
                 label="First Name"
-                autoFocus/>
+                autoFocus
+                value={this.state.firstname}
+                onBlur={this.handleInput('firstname')}
+                onChange={this.handleInput('firstname')}/>
             </Grid>
             <Grid item xs={12} >
               <TextField
@@ -98,7 +141,10 @@ constructor(props){
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"/>
+                autoComplete="lname"
+                value={this.state.lastname}
+                onBlur={this.handleInput('lastname')}
+                onChange={this.handleInput('lastname')}/>
             </Grid>
           
     
@@ -108,14 +154,18 @@ constructor(props){
            fullWidth
            margin="normal"
            label="Home Phone"
-           className="text-field"/> 
+           className="text-field"
+           value={this.state.homephone}
+           onChange={this.handleInput('homephone')}/>
          </Grid> 
        <Grid item  xs={12} sm={6}>
         <TextField
            fullWidth
            variant="outlined"
            label="Mobile Phone"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.mobilephone}
+           onChange={this.handleInput('mobilephone')}/>
       </Grid>
 
       <Grid item  xs={12} sm={6}>
@@ -123,7 +173,9 @@ constructor(props){
            fullWidth
            variant="outlined"
            label="Work Phone"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.workphone}
+           onChange={this.handleInput('workphone')}/>
       </Grid>
 
       <Grid item  xs={12} sm={6}>
@@ -131,7 +183,9 @@ constructor(props){
            fullWidth
            variant="outlined"
            label="Email"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.email}
+           onChange={this.handleInput('email')}/>
       </Grid>
 
 
@@ -140,7 +194,9 @@ constructor(props){
            fullWidth
            variant="outlined"
            label="City"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.city}
+           onChange={this.handleInput('city')}/>
       </Grid>
 
       <Grid item  xs={12} sm={6}>
@@ -148,7 +204,9 @@ constructor(props){
            fullWidth
            variant="outlined"
            label="State or Province"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.stateprob}
+           onChange={this.handleInput('stateprob')}/>
       </Grid>
 
       <Grid item  xs={12} sm={6}>
@@ -156,7 +214,9 @@ constructor(props){
            fullWidth
            variant="outlined"
            label="Postal Code"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.postal}
+           onChange={this.handleInput('postal')}/>
       </Grid>
 
       <Grid item  xs={12} sm={6}>
@@ -164,18 +224,23 @@ constructor(props){
            fullWidth
            variant="outlined"
            label="Country"
-           margin="normal"/>
+           margin="normal"
+           value={this.state.country}
+           onChange={this.handleInput('country')}/>
       </Grid>
 
           </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handlecreatContact} color="primary">
               Save New Contact
             </Button>
           </DialogActions>
         </Dialog>
-
+        </form>
     </div>
     )
   }
