@@ -34,7 +34,6 @@ function register(req, res) {
 function login(req, res) {
   const db = req.app.get('db');
   const { username, password } = req.body;
-
   db.users
     .findOne(
       {

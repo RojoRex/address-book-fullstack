@@ -36,6 +36,7 @@ constructor(props){
   super (props)
   this.state = {
     open: false,
+    userId:'',
     firstname:'',
     lastname:'',
     email:'',
@@ -51,6 +52,22 @@ constructor(props){
   this.handlecreatContact=this.handlecreatContact.bind(this)
 }
 
+componentDidMount(){
+  if(localStorage.getItem("usernameId")){
+    this.setState({
+      userId:localStorage.getItem('usernameId')
+      
+  })
+  axios.get(`http://localhost:3001/api/list/${localStorage.getItem('usernameId')}`)
+  .then(res=>{this.setState({
+      contacts:res.data
+  })  
+  })
+  } 
+  
+}
+
+
   handleClickOpen = () => {
     this.setState({
       open: true,
@@ -63,19 +80,24 @@ constructor(props){
 
   logout(e){
 
-    localStorage.clear()
+   
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('usernameId')
     this.props.history.push('/')
 
   }
+
+
 
   handleInput=input=>e=>{
     this.setState({[input]:e.target.value,})
   }
 
-
   handlecreatContact(e){
     e.preventDefault();
     axios.post("http://localhost:3001/api/addressbook",{
+      userid:this.state.userId,
       firstname:this.state.firstname,
       lastaname:this.state.lastname,
       email:this.state.email,
@@ -88,7 +110,8 @@ constructor(props){
       workphone:this.state.workphone,
     })
     .then(res=>{
-      console.log(res.data)
+    window.location.reload(true)
+    
     })
 
   }

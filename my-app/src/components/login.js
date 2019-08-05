@@ -74,6 +74,9 @@ constructor(props){
   this.handleLogin=this.handleLogin.bind(this)
 }
 
+
+
+
 handleuserName(e){
   this.setState({user: e.target.value})
   var input=e.target.value;
@@ -99,22 +102,26 @@ handlePassword(e){
 
 handleLogin(e){
   e.preventDefault();
-
   axios.post("http://localhost:3001/api/login",{
     username:this.state.user,
     password:this.state.password
   })
   .then(res=>{
+    console.log(res)
     if(res.data.error ==="Invalid username" || res.data.error ==="Incorrect password"){
-
+      console.log(res.data)
       alert(res.data.error)
-    }else{
+    }else if(this.state.user.length===0 && this.state.password.length ===0){
+      alert("username and password is empty")
+    }
+    
+    else{
       alert("Log in accepted")
-      this.props.history.replace("/addressbook");
-
-      console.log(res)
+     
       localStorage.setItem('token', res.data.token)
-
+      localStorage.setItem('username',res.data.username)
+      localStorage.setItem('usernameId',res.data.id)
+      this.props.history.replace("/addressbook");
     }
   })
 }

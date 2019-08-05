@@ -28,7 +28,8 @@ massive({
 
   //addressbook
   app.post('/api/addressbook',adddressbook.addNewaddress)
-  app.get('/api/contacts', adddressbook.getList);
+  app.get('/api/list/:userid', adddressbook.getuserData);
+  app.delete('/delete/:id',adddressbook.deleteContact)
 
   app.get('/api/protected/data', (req, res) => {
     if (!req.headers.authorization) {
