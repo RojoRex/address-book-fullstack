@@ -1,7 +1,7 @@
 exports.shorthands = undefined;
 
 exports.up = pgm => {
-    pgm.createTable('addressbook', {
+    pgm.createTable('addcontacts', {
       id: {
         type: 'serial',
         primaryKey: true,

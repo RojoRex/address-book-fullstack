@@ -19,6 +19,7 @@ import Table from './contactlist'
 const AddressStyle={
   root: {
     flexGrow: 1,
+    maxWidth:'100%',
   },
   title: {
     flexGrow: 1,
@@ -96,8 +97,8 @@ componentDidMount(){
 
   handlecreatContact(e){
     e.preventDefault();
-    axios.post("http://localhost:3001/api/addressbook",{
-      userid:this.state.userId,
+    axios.post("http://localhost:3001/api/contacts",{
+      userId:this.state.userId,
       firstname:this.state.firstname,
       lastaname:this.state.lastname,
       email:this.state.email,

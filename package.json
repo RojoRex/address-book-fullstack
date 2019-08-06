@@ -27,6 +27,7 @@
     "localstorage": "^1.0.1",
     "massive": "^5.11.2",
     "material-ui": "^0.20.2",
+    "material-ui-icons": "^1.0.0-beta.36",
     "node-pg-migrate": "^3.21.1",
     "pg": "^7.12.0"
   }

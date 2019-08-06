@@ -1,11 +1,11 @@
-function addNewaddress(req,res){
+function addNewcontact(req,res){
     const db=req.app.get('db');
-    const{userid,firstname,lastaname,email,city,stateprob,postal,
+    const{userId,firstname,lastaname,email,city,stateprob,postal,
         country,homephone,mobilephone,workphone,} =req.body;
 
-    db.addressbook
+    db.addcontacts
     .save({
-        userid,
+        userId,
         firstname,
         lastaname,
         email,
@@ -17,7 +17,7 @@ function addNewaddress(req,res){
         mobilephone,
         workphone,
     })
-    .then(address => res.status(201).json(address))
+    .then(contact => res.status(201).json(contact))
     .catch(err=>{
         console.error(err);
         res.status(500).end();
@@ -26,21 +26,24 @@ function addNewaddress(req,res){
 
   function getuserData(req, res) {
     const db = req.app.get('db');
-    const {userid}=req.params;
-    
-    if(userid){
-    db.addressbook
-    .find({userid: userid})
-    .then(list =>{res.status(201).json(list)})
-    .catch(err => {
-          res.status(200).json({ error: err.message });
-          console.error(err);
-          res.status(500).end();
-      });
-    } else {
-        res.status(201).json('list not found') 
+    const {userId}=req.params;
+    const {sort} = req.query
+    console.log(sort)
+   if(sort!=undefined){
+        db.addcontacts
+      .find({userId},{order: [{field: sort,direction: 'asc',}]
+      }).then(contact => { res.status(200).json(contact);
+      }).catch(err => { res.status(500).end();
+      })
+    }else{
+        db.addcontacts
+      .find(      
+      {
+        userId      
+      }).then(contact => { res.status(200).json(contact);
+      }).catch(err => { res.status(500).end();
+      })
     }
-
 }
 
 function deleteContact(req, res) {
@@ -48,7 +51,7 @@ function deleteContact(req, res) {
     const {id}=req.params;
     console.log(id)
     if(id){
-    db.addressbook.destroy({id})
+    db.addcontacts.destroy({id})
     .then(list =>{res.status(201).json(list)})
     .catch(err => {
           res.status(200).json({ error: err.message });
@@ -63,7 +66,7 @@ function deleteContact(req, res) {
 
 
 module.exports={
-    addNewaddress,
+    addNewcontact,
     getuserData,
     deleteContact,
 };
