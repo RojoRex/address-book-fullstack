@@ -12,17 +12,18 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import Table from './contactlist'
+import { border } from '@material-ui/system';
+
 
 
 
 
 const AddressStyle={
   root: {
-    flexGrow: 1,
-    maxWidth:'100%',
+    width:'100%',
   },
   title: {
-    flexGrow: 1,
+   
   },
   butt:{
     marginRight:'20px',
@@ -99,16 +100,16 @@ componentDidMount(){
     e.preventDefault();
     axios.post("http://localhost:3001/api/contacts",{
       userId:this.state.userId,
-      firstname:this.state.firstname,
-      lastaname:this.state.lastname,
+      first_name:this.state.firstname,
+      last_name:this.state.lastname,
       email:this.state.email,
       city:this.state.city,
-      stateprob:this.state.stateprob,
-      postal:this.state.postal,
+      state_or_province:this.state.stateprob,
+      postal_code:this.state.postal,
       country:this.state.country,
-      homephone:this.state.homephone,
-      mobilephone:this.state.mobilephone,
-      workphone:this.state.workphone,
+      home_phone:this.state.homephone,
+      mobile_phone:this.state.mobilephone,
+      work_phone:this.state.workphone,
     })
     .then(res=>{
     window.location.reload(true)
@@ -127,7 +128,7 @@ componentDidMount(){
         <Button variant="contained" color="secondary" className={classes.butt} onClick={this.handleClickOpen}>
           Add New Contact
         </Button>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" >
             Address Book    
           </Typography>
           <Button onClick={(e) => this.logout(e)  } color="inherit">Log out</Button>
@@ -253,7 +254,7 @@ componentDidMount(){
            onChange={this.handleInput('country')}/>
       </Grid>
 
-          </Grid>
+          </Grid> 
           </DialogContent>
           <DialogActions>
           <Button onClick={this.handleClose} color="primary">

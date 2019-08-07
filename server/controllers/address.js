@@ -1,21 +1,21 @@
 function addNewcontact(req,res){
     const db=req.app.get('db');
-    const{userId,firstname,lastaname,email,city,stateprob,postal,
-        country,homephone,mobilephone,workphone,} =req.body;
+    const{userId,first_name,last_name,email,city,state_or_province,postal_code,
+        country,home_phone,mobile_phone,work_phone,} =req.body;
 
-    db.addcontacts
+    db.contacts
     .save({
         userId,
-        firstname,
-        lastaname,
+        first_name,
+        last_name,
         email,
         city,
-        stateprob,
-        postal,
+        state_or_province,
+        postal_code,
         country,
-        homephone,
-        mobilephone,
-        workphone,
+        home_phone,
+        mobile_phone,
+        work_phone,
     })
     .then(contact => res.status(201).json(contact))
     .catch(err=>{
@@ -28,15 +28,15 @@ function addNewcontact(req,res){
     const db = req.app.get('db');
     const {userId}=req.params;
     const {sort} = req.query
-    console.log(sort)
+  
    if(sort!=undefined){
-        db.addcontacts
+        db.contacts
       .find({userId},{order: [{field: sort,direction: 'asc',}]
       }).then(contact => { res.status(200).json(contact);
       }).catch(err => { res.status(500).end();
       })
     }else{
-        db.addcontacts
+        db.contacts
       .find(      
       {
         userId      
@@ -49,9 +49,9 @@ function addNewcontact(req,res){
 function deleteContact(req, res) {
     const db = req.app.get('db');
     const {id}=req.params;
-    console.log(id)
+
     if(id){
-    db.addcontacts.destroy({id})
+    db.contacts.destroy({id})
     .then(list =>{res.status(201).json(list)})
     .catch(err => {
           res.status(200).json({ error: err.message });
@@ -64,9 +64,49 @@ function deleteContact(req, res) {
 
 }
 
+function getList(req, res) {
+  const db = req.app.get('db');
+  const {userId}=req.params;
+ 
+  if(userId){
+  
+  db.contacts.find({id:userId})
+  .then(list => res.status(201).json(list)
+  )
+
+  } else {
+      res.status(201).json('error') 
+  }
+
+}
+
+function contactdata(req, res) {
+  const db = req.app.get('db');
+  const {id}=req.params;
+  
+  if(id){
+  db.contacts.find({id: id})
+  .then(contactdata =>{
+      
+      res.status(201).json(contactdata)
+
+  })
+  .catch(err => {
+        res.status(200).json({ error: err.message });
+        console.error(err);
+        res.status(500).end();
+    });
+  } else {
+      res.status(201).json('error ung params') 
+  }
+
+}
+
 
 module.exports={
     addNewcontact,
     getuserData,
     deleteContact,
+    getList,
+    contactdata,
 };

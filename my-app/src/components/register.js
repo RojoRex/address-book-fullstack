@@ -25,6 +25,7 @@ const signInstyle = {
     backgroundSize:'cover',
     backgroundImage: `url(${Background})`,
     height:'1000px',
+    width: '100%',
   },
 
    'warning': {

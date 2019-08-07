@@ -13,7 +13,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { IconButton, TextField } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import Viewcontact from './viewContacts'
+import Dialog from '@material-ui/core/Dialog';
 import axios from 'axios';
 
 
@@ -23,16 +25,13 @@ const tableStyle={
         padding:'17px',
         maxWidth: '90%',
         marginTop:'50px',
-        height:'700px',
+        height:'800px',
         border:'1px solid black',
        },
        'input':{
         marginLeft:'20px',
         marginTop:'10px',
         width:'19%',
-       },
-       'list':{
-        flexGrow: 1,
        },
        'bg':{
           backgroundColor:'gray',
@@ -42,6 +41,10 @@ const tableStyle={
         marginLeft:'40px',
         width:'39%',
      },
+     root: {
+      width: '100%',
+      overflowX: 'auto',
+    },
      
      
 }
@@ -55,11 +58,15 @@ class Tablelist extends React.Component{
 
         this.state={
             contacts:[],
+            viewcontact:[],
             val:'',
             serts:'',
+            open: false,
+            query: '',
         }
         this.handleDelete=this.handleDelete.bind(this)
         this.handleSelect=this.handleSelect.bind(this)
+        this.handelcontactView=this.handelcontactView.bind(this)
     }
 
     componentDidMount(){
@@ -71,6 +78,20 @@ class Tablelist extends React.Component{
     })   
     }
     
+    search(e){
+      this.setState({
+        query: '',
+      })
+    }
+  
+    handleSearch(event) {
+      console.log(event.target.value)
+      this.setState({
+        query: event.target.value
+      })
+    }
+  
+  
 
     handleDelete(id){
         axios.delete(`http://localhost:3001/delete/${id}`)
@@ -91,31 +112,44 @@ class Tablelist extends React.Component{
         }).catch(err => {console.error(err)})
         }
 
+
+        handelcontactView(e){
+          axios.get(`http://localhost:3001/api/data/${e}`)
+          .then(res=>{
+            this.setState({
+              viewcontact: res.data[0],
+              open:true,
+            })
+            console.log(res)
+          })  
+        }
+      
+        handleClose = () => {
+          this.setState({ open: false });
+        };
+
     render(){
         const {classes}=this.props
         return(
 
-<Paper >
-          
-    <div style={{width: '100%',display: 'flex',flexWrap: 'wrap',}}>
+
+       <React.Fragment>   
+
+
+        <Grid className={classes.signIn} >
+          <Paper className={classes.root}>
+          <div>
         
         <FormControl className={classes.input}>
         <InputLabel htmlFor="sort">sort</InputLabel>
         <Select  value={this.state.val} onChange={(e)=>this.handlesort(e.target.value)}>
-               <MenuItem value="firstname" >Firstname</MenuItem>
-               <MenuItem  value="lastaname">Lastname</MenuItem>
+               <MenuItem value="first_name" >Firstname</MenuItem>
+               <MenuItem  value="last_name">Lastname</MenuItem>
                
         </Select>
         </FormControl >
-
-
-
-          <TextField className={classes.field} label="Search" value={this.state.serts} onChange={this.handleSelect("serts")} fullWidth/>
-
-
-    </div>
-
-        <Grid className={classes.signIn}>
+          <TextField className={classes.field} label="Search" value={this.state.query} onChange={(event) => this.handleSearch(event)} fullWidth/>
+        </div>
         <Table >
           <TableHead>
               <TableCell align="left">First Name</TableCell>
@@ -123,26 +157,33 @@ class Tablelist extends React.Component{
               <TableCell align="left">Mobile Phone</TableCell>
               <TableCell align="left">Actions</TableCell>
           </TableHead>
-          <TableBody>
-          {this.state.contacts.map(res => (
-              <TableRow key={res.id}>
-                <TableCell align="left" >{res.firstname}</TableCell>
-                <TableCell align="left" >{res.lastaname}</TableCell>
-                <TableCell align="left" >{res.mobilephone}</TableCell>
-                <TableCell align="left" >
-                    <IconButton size="small"  >
-                      edit
+          
+          {this.state.contacts.filter(contacts=>contacts.first_name.toLowerCase().match(this.state.query.toLowerCase())||contacts.last_name.toLowerCase().match(this.state.query.toLowerCase())).map(res => (
+             <TableBody >
+             <TableRow key={res.userId}>
+                <TableCell align="left" >{res.first_name}</TableCell>
+                <TableCell align="left" >{res.last_name}</TableCell>
+                <TableCell align="left" >{res.mobile_phone}</TableCell>
+                <TableCell align="left">
+                    <IconButton onClick={()=> this.handelcontactView(res.id)} >
+                    <VisibilityIcon />
                     </IconButton>
-                    <IconButton size="small" onClick={()=>this.handleDelete(res.id)}>
+                    <IconButton  onClick={()=>this.handleDelete(res.id)}>
                     <DeleteIcon />
                     </IconButton>
                   </TableCell>
-                </TableRow>
+              </TableRow>
+              </TableBody>
             ))}
-          </TableBody>
+         
         </Table>
+        </Paper>
     </Grid>
-</Paper>
+    <Dialog  open={this.state.open} onClose={this.handleClose}>
+    <Viewcontact contactsList={this.state.viewcontact}/>
+    </Dialog>
+
+    </React.Fragment>
         )
     }
 }

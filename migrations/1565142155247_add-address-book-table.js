@@ -14,7 +14,7 @@ exports.up = pgm => {
       contactsId: {
         type: 'integer',
         notNull: true,
-        references: '"addcontacts"',
+        references: '"contacts"',
       }
     });
   };
