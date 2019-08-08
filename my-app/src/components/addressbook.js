@@ -12,23 +12,28 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import Table from './contactlist'
-import { border } from '@material-ui/system';
+import Tooltip from '@material-ui/core/Tooltip';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import IconButton from '@material-ui/core/IconButton';
 
 
 
 
 
-const AddressStyle={
-  root: {
-    width:'100%',
+
+
+
+const useStyles= {
+  'root': {
+    display:"flex",
+    height:"70px",
+    width:"100%",
   },
-  title: {
-   
+  'addcontact': {
+    marginRight:"20px",
   },
-  butt:{
-    marginRight:'20px',
-    color:'white',
-    
+  'title': {
+    flexGrow: '1',
   },
 }
 
@@ -120,18 +125,20 @@ componentDidMount(){
 
 
   render(){
-      const {classes}=this.props
+    const {classes} = this.props
     return(
-      <div className={classes.root}>
-      <AppBar position="static">
+      
+      <div >
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
-        <Button variant="contained" color="secondary" className={classes.butt} onClick={this.handleClickOpen}>
-          Add New Contact
-        </Button>
-          <Typography variant="h6" >
-            Address Book    
-          </Typography>
-          <Button onClick={(e) => this.logout(e)  } color="inherit">Log out</Button>
+        <Tooltip title="Add contact">
+        <Button className={classes.addcontact} variant="contained" color="secondary" edge="start"  onClick={this.handleClickOpen}>
+        <AccountBoxIcon/>
+        </Button></Tooltip>
+        <Typography variant="h6" className={classes.title} style={{marginLeft:"20px",}} >
+          Addressbook
+        </Typography>
+          <IconButton onClick={(e) => this.logout(e)} color="inherit" >Logout</IconButton>
         </Toolbar>
       </AppBar>
       <Table/>
@@ -271,4 +278,4 @@ componentDidMount(){
   }
 }
 
-export default withStyles (AddressStyle) (Addressbook)
+export default withStyles (useStyles)  (Addressbook)

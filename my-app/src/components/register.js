@@ -18,14 +18,13 @@ const signInstyle = {
    margin:'15px auto',
    padding:'17px',
    maxWidth: '550px',
-   height:'395px',
+   height:'455px',
   },
   'bG':{
     backgroundPosition: 'center',
     backgroundSize:'cover',
     backgroundImage: `url(${Background})`,
-    height:'1000px',
-    width: '100%',
+    
   },
 
    'warning': {
@@ -46,7 +45,7 @@ const signInstyle = {
 
     width:'100%',
     height:'70px',
-    marginTop:'45px',
+    marginTop:'25px',
   },
   'pads':{
     marginBottom:'40px',
@@ -72,7 +71,7 @@ constructor(props){
     lastname:'',
     user:'',
     password:'',
-    userError:false,
+    nameError:false,
     passError:false,
   }
   this.handlePassword=this.handlePassword.bind(this)
@@ -86,10 +85,10 @@ handlefirstName(e){
   this.setState({firstname: e.target.value})
   var input=e.target.value;
   if (input.length){
-    this.setState({userError:false})
+    this.setState({nameError:false})
   }
   else{
-    this.setState({userError:true})
+    this.setState({nameError:true})
   }
 }
 
@@ -155,14 +154,15 @@ render(){
        direction="column"
        justify="center"
        alignItems="center"
-
+       
+       
        >
        <img src={Icon} className={classes.imgs} alt=""/>
        <Paper  className={classes.signIn}>
        <form onSubmit={this.handlesubmit}>
         
         <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} >
               <TextField
                 autoComplete="fname"
                 name="firstName"
@@ -175,12 +175,29 @@ render(){
                 value={this.state.firstname}
                 onBlur={this.handlefirstName}
                 onChange={this.handlefirstName}
+                error={this.state.nameError}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+
+            {this.state.nameError ? (
+                 <React.Fragment>
+                  <p className={classes.warning}>
+                    Firstname is required
+                  </p>
+                  </React.Fragment>
+                  ) : ( 
+                  <React.Fragment> 
+                    <p className={classes.dis}>
+                  </p>
+                  </React.Fragment>
+                   
+          )}
+           
+       
+
+            <Grid item xs={12} >
               <TextField
                 variant="outlined"
-                required
                 fullWidth
                 id="lastName"
                 label="Last Name"
@@ -204,29 +221,12 @@ render(){
            value={this.state.user}
            onBlur={this.handleuserName}
            onChange={this.handleuserName}
-           error={this.state.userError}
-      
         /> 
          </Grid>
-        {this.state.userError ? (
-                 <React.Fragment>
-                  <p className={classes.warning}>
-                    Username is required
-                  </p>
-                  </React.Fragment>
-                  ) : ( 
-                  <React.Fragment> 
-                    <p className={classes.dis}>
-                  </p>
-                  </React.Fragment>
-                   
-          )}
-           
-       
+        
        <Grid item  xs={12}>
         <TextField
            fullWidth
-           required
            variant="outlined"
            label="Password"
            type="password"
@@ -234,25 +234,9 @@ render(){
            value={this.state.pass}
            onBlur={this.handlePassword}
            onChange={this.handlePassword}
-           error={this.state.passError}
-          
       />
       
       </Grid>
-      
-            {this.state.passError ? (
-                 <React.Fragment>
-                  <p className={classes.warning}>
-                    Password is required
-                  </p>
-                  </React.Fragment>
-                  ) : ( 
-                  <React.Fragment> 
-                    <p className={classes.dis}>
-                  </p>
-                  </React.Fragment>
-                   
-          )}
           
           
           <div className={classes.bBox}>

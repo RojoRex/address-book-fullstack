@@ -4,29 +4,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import ListItemText from '@material-ui/core/ListItemText';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import axios from 'axios';
 
 const AddressStyle={
-  root: {
-    flexGrow: 1,
-    maxWidth:'100%',
-  },
-  title: {
-    flexGrow: 1,
-  },
-  butt:{
-    marginRight:'20px',
-    color:'white',
-    
-  },
-
-    tool: {
-        width: '100%',
-        maxWidth: 360,
-      },
+  'mid':{
+    margin:'15px auto',
+    padding:'17px',
+  
+   },
 }
 
 
@@ -34,28 +21,62 @@ class Addressbook extends React.Component{
 constructor(props){
   super (props)
   this.state = {
+    disable:true,
+    userId:this.props.contactsList.id,
+    firstname:this.props.contactsList.first_name,
+    lastname:this.props.contactsList.last_name,
+    email:this.props.contactsList.email,
+    city:this.props.contactsList.city,
+    stateprob:this.props.contactsList.state_or_province,
+    postal:this.props.contactsList.postal_code,
+    country:this.props.contactsList.country,
+    homephone:this.props.contactsList.home_phone,
+    mobilephone:this.props.contactsList.mobile_phone,
+    workphone:this.props.contactsList.work_phone,
+  };
+  this.handleInput=this.handleInput.bind(this)
+  this.handleUpdate=this.handleUpdate.bind(this)
+}
+  
+  handleUpdate(){
+    const id=this.props.contactsList.id
+    axios.patch(`http://localhost:3001/api/update/`+id,{
+      first_name:this.state.firstname,
+      last_name:this.state.lastname,
+      email:this.state.email,
+      postal_code:this.state.postal,
+      city:this.state.city,
+      state_or_province:this.state.stateprob,
+      country:this.state.country,
+      home_phone:this.state.homephone,
+      mobile_phone:this.state.mobilephone,
+      work_phone:this.state.workphone,
+    }).then(res=>{
+     window.location.reload();
+    })
+  }
+
+
+
+  handleEdit = () => {
+    this.setState({ disable: false })
     
   };
-  this.handleClose=this.handleClose.bind(this)
-}
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
+  handleInput=input=>e=>{
+    this.setState({[input]:e.target.value,})
+  }
  
   render(){
-      const {classes,contactsList}=this.props
-      
+      const {classes}=this.props 
     return(
-      <div className={classes.root}>
       
-     
-          <DialogTitle onClose={this.handleClose}>
+      <div className={classes.mid}>
+      
+      
+          <DialogTitle>
             Contact
           </DialogTitle>
           <DialogContent dividers>
@@ -63,185 +84,141 @@ constructor(props){
           <Grid container spacing={2}>
           
         <Grid item xs={12}>
-        <List className={classes.loot}>
-        <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Fullname"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.first_name+" " +contactsList.last_name}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-      
-        <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Email"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.email}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="City"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.city}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="State or Province"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.state_or_province}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Postal Code"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.postal_code}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Country"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.country}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Home Phone"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.home_phone}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-        
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Mobile Phone"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.mobile_phone}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-      <ListItem alignItems="flex-start">
-        <ListItemText
-          primary="Work Phone"
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                color="textPrimary"
-              >
-               
-              </Typography>
-              {contactsList.work_phone}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-
-
-
-      </List>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
+              <TextField
+                autoComplete="fname"
+                name="firstName"
+                variant="outlined"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                disabled={this.state.disable}
+                autoFocus
+                value={this.state.firstname}
+                onChange={this.handleInput('firstname')}/>
+                
             </Grid>
-
-
-           
-   
-          </Grid>
+            <Grid item xs={12} >
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="lname"
+                disabled={this.state.disable}
+                value={this.state.lastname}
+                onChange={this.handleInput('lastname')}/>
+            </Grid>
           
-    </DialogContent>
+    
+        <Grid item xs={12}  sm={6}>
+         <TextField
+          variant="outlined"
+           fullWidth
+           margin="normal"
+           label="Home Phone"
+           disabled={this.state.disable}
+           className="text-field"
+           value={this.state.homephone}
+           onChange={this.handleInput('homephone')}/>
+         </Grid> 
+       <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           variant="outlined"
+           label="Mobile Phone"
+           disabled={this.state.disable}
+           margin="normal"
+           value={this.state.mobilephone}
+           onChange={this.handleInput('mobilephone')}/>
+      </Grid>
 
-      
+      <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           variant="outlined"
+           label="Work Phone"
+           disabled={this.state.disable}
+           margin="normal"
+           value={this.state.workphone}
+           onChange={this.handleInput('workphone')}/>
+      </Grid>
+
+      <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           variant="outlined"
+           disabled={this.state.disable}
+           label="Email"
+           margin="normal"
+           value={this.state.email}
+           onChange={this.handleInput('email')}/>
+      </Grid>
+
+
+      <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           variant="outlined"
+           disabled={this.state.disable}
+           label="City"
+           margin="normal"
+           value={this.state.city}
+           onChange={this.handleInput('city')}/>
+      </Grid>
+
+      <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           variant="outlined"
+           disabled={this.state.disable}
+           label="State or Province"
+           margin="normal"
+           value={this.state.stateprob}
+           onChange={this.handleInput('stateprob')}/>
+      </Grid>
+
+      <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           variant="outlined"
+           disabled={this.state.disable}
+           label="Postal Code"
+           margin="normal"
+           value={this.state.postal}
+           onChange={this.handleInput('postal')}/>
+      </Grid>
+
+      <Grid item  xs={12} sm={6}>
+        <TextField
+           fullWidth
+           disabled={this.state.disable}
+           variant="outlined"
+           label="Country"
+           margin="normal"
+           value={this.state.country}
+           onChange={this.handleInput('country')}/>
+      </Grid>
+
+          </Grid> 
+            </Grid>
+          </Grid>
+    </DialogContent>
+    <DialogActions>
+          <Button onClick={this.handleClose}color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleEdit} color="primary">
+              Edit
+            </Button>
+            <Button onClick={this.handleUpdate} color="primary">
+              Save New Contact
+            </Button>
+          </DialogActions>
+         
     </div>
     )
   }

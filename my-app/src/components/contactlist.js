@@ -17,6 +17,9 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import Viewcontact from './viewContacts'
 import Dialog from '@material-ui/core/Dialog';
 import axios from 'axios';
+import Tooltip from '@material-ui/core/Tooltip';
+import EditIcon from '@material-ui/icons/Edit';
+
 
 
 const tableStyle={
@@ -74,7 +77,6 @@ class Tablelist extends React.Component{
         .then(res=>{this.setState({
             contacts:res.data
         }) 
-        console.log(res) 
     })   
     }
     
@@ -94,7 +96,7 @@ class Tablelist extends React.Component{
   
 
     handleDelete(id){
-        axios.delete(`http://localhost:3001/delete/${id}`)
+        axios.delete(`http://localhost:3001/api/delete/${id}`)
         .then(res =>{
           window.location.reload(true)
         })
@@ -105,7 +107,6 @@ class Tablelist extends React.Component{
       }
 
    handlesort(e){
-     console.log(e)
      this.setState({val:e})
         axios.get(`http://localhost:3001/api/list/${localStorage.getItem('usernameId')+'?sort='+e}`)
         .then(res => {  this.setState({ contacts: res.data})  
@@ -114,18 +115,23 @@ class Tablelist extends React.Component{
 
 
         handelcontactView(e){
+          
           axios.get(`http://localhost:3001/api/data/${e}`)
           .then(res=>{
             this.setState({
               viewcontact: res.data[0],
               open:true,
             })
-            console.log(res)
           })  
         }
-      
+
         handleClose = () => {
-          this.setState({ open: false });
+          this.setState({ open: false});
+        };
+  
+        handleClose = () => {
+          this.setState({ open: false})
+          
         };
 
     render(){
@@ -165,12 +171,17 @@ class Tablelist extends React.Component{
                 <TableCell align="left" >{res.last_name}</TableCell>
                 <TableCell align="left" >{res.mobile_phone}</TableCell>
                 <TableCell align="left">
+                <Tooltip title="View">
                     <IconButton onClick={()=> this.handelcontactView(res.id)} >
                     <VisibilityIcon />
                     </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Delete">
                     <IconButton  onClick={()=>this.handleDelete(res.id)}>
                     <DeleteIcon />
                     </IconButton>
+                    </Tooltip>
                   </TableCell>
               </TableRow>
               </TableBody>
@@ -179,10 +190,9 @@ class Tablelist extends React.Component{
         </Table>
         </Paper>
     </Grid>
-    <Dialog  open={this.state.open} onClose={this.handleClose}>
-    <Viewcontact contactsList={this.state.viewcontact}/>
+    <Dialog  open={this.state.open}  >
+    <Viewcontact contactsList={this.state.viewcontact} onclick={this.handleClose} open={this.state.open} onClick={this.handleClose}  />
     </Dialog>
-
     </React.Fragment>
         )
     }

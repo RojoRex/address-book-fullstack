@@ -30,7 +30,8 @@ massive({
   app.post('/api/contacts',adddressbook.addNewcontact)
   app.get('/api/list/:userId', adddressbook.getuserData);
   app.get('/api/data/:id', adddressbook.contactdata);
-  app.delete('/delete/:id',adddressbook.deleteContact)
+  app.delete('/api/delete/:id',adddressbook.deleteContact)
+  app.patch('/api/update/:id',adddressbook.update_contactdata)
 
   app.get('/api/protected/data', (req, res) => {
     if (!req.headers.authorization) {

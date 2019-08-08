@@ -97,13 +97,41 @@ function contactdata(req, res) {
         res.status(500).end();
     });
   } else {
-      res.status(201).json('error ung params') 
+      res.status(201).json('Error') 
   }
 
 }
 
+function update_contactdata(req, res) {
+  const db = req.app.get('db');
+  const {id}=req.params;
+  const { first_name,last_name,email,postal_code,city,
+    state_or_province,country, home_phone, mobile_phone, work_phone} =req.body;
+  
+  if(id){
+  db.contacts
+  .update(
+      {id: id},
+      {
+          first_name,last_name,email,postal_code,city,
+          state_or_province,country, home_phone, mobile_phone, work_phone
+      })
+  .then(contactdata =>{
+      res.status(201).json(contactdata)
+  })
+  .catch(err => {
+        res.status(200).json({ error: err.message });
+        console.error(err);
+        res.status(500).end();
+    });
+  } else {
+      res.status(201).json('Error') 
+  }
+
+}
 
 module.exports={
+    update_contactdata,
     addNewcontact,
     getuserData,
     deleteContact,

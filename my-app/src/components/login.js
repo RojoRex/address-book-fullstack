@@ -107,7 +107,6 @@ handleLogin(e){
     password:this.state.password
   })
   .then(res=>{
-    console.log(res)
     if(res.data.error ==="Invalid username" || res.data.error ==="Incorrect password"){
       console.log(res.data)
       alert(res.data.error)
