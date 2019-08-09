@@ -21,6 +21,7 @@ class Addressbook extends React.Component{
 constructor(props){
   super (props)
   this.state = {
+    open:this.props.open,
     disable:true,
     userId:this.props.contactsList.id,
     firstname:this.props.contactsList.first_name,
@@ -51,6 +52,7 @@ constructor(props){
       home_phone:this.state.homephone,
       mobile_phone:this.state.mobilephone,
       work_phone:this.state.workphone,
+      
     }).then(res=>{
      window.location.reload();
     })
@@ -60,22 +62,27 @@ constructor(props){
 
   handleEdit = () => {
     this.setState({ disable: false })
-    
   };
 
-  
+  handleCancleEdit=()=>{
+    this.setState({disable:true,open:false})
+  }
 
   handleInput=input=>e=>{
     this.setState({[input]:e.target.value,})
   }
  
+    
+  handleClose = (e) => {
+    this.setState({ open: true})
+    
+  };
+
   render(){
       const {classes}=this.props 
     return(
       
       <div className={classes.mid}>
-      
-      
           <DialogTitle>
             Contact
           </DialogTitle>
@@ -208,14 +215,14 @@ constructor(props){
           </Grid>
     </DialogContent>
     <DialogActions>
-          <Button onClick={this.handleClose}color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleEdit} color="primary">
+            <Button onClick={this.handleEdit} variant="contained"  color="primary">
               Edit
             </Button>
-            <Button onClick={this.handleUpdate} color="primary">
-              Save New Contact
+            <Button onClick={this.handleUpdate} variant="contained" disabled={this.state.disable} color="primary">
+              Save
+            </Button>
+            <Button onClick={this.handleCancleEdit} variant="contained" color="secondary">
+              Cancel Edit
             </Button>
           </DialogActions>
          

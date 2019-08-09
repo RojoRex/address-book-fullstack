@@ -15,7 +15,7 @@ import Table from './contactlist'
 import Tooltip from '@material-ui/core/Tooltip';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import IconButton from '@material-ui/core/IconButton';
-
+import Switch from '@material-ui/core/Switch';
 
 
 
@@ -136,7 +136,14 @@ componentDidMount(){
         <AccountBoxIcon/>
         </Button></Tooltip>
         <Typography variant="h6" className={classes.title} style={{marginLeft:"20px",}} >
-          Addressbook
+        <Grid component="label" container alignItems="center" spacing={1}>
+          <Grid item>Addressbook</Grid>
+          <Grid item>
+            <Switch
+            />
+          </Grid>
+          <Grid item>Groups</Grid>
+        </Grid>
         </Typography>
           <IconButton onClick={(e) => this.logout(e)} color="inherit" >Logout</IconButton>
         </Toolbar>

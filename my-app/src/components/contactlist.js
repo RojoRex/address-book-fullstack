@@ -87,7 +87,6 @@ class Tablelist extends React.Component{
     }
   
     handleSearch(event) {
-      console.log(event.target.value)
       this.setState({
         query: event.target.value
       })
@@ -128,11 +127,7 @@ class Tablelist extends React.Component{
         handleClose = () => {
           this.setState({ open: false});
         };
-  
-        handleClose = () => {
-          this.setState({ open: false})
-          
-        };
+
 
     render(){
         const {classes}=this.props
@@ -145,16 +140,17 @@ class Tablelist extends React.Component{
         <Grid className={classes.signIn} >
           <Paper className={classes.root}>
           <div>
-        
-        <FormControl className={classes.input}>
-        <InputLabel htmlFor="sort">sort</InputLabel>
-        <Select  value={this.state.val} onChange={(e)=>this.handlesort(e.target.value)}>
+          <TextField variant="outlined" className={classes.field} label="Search" value={this.state.query} onChange={(event) => this.handleSearch(event)} fullWidth/>
+
+          <FormControl className={classes.input}>
+            <InputLabel htmlFor="sort">sort</InputLabel>
+        <       Select  value={this.state.val} onChange={(e)=>this.handlesort(e.target.value)}>
                <MenuItem value="first_name" >Firstname</MenuItem>
                <MenuItem  value="last_name">Lastname</MenuItem>
                
-        </Select>
+                </Select>
         </FormControl >
-          <TextField className={classes.field} label="Search" value={this.state.query} onChange={(event) => this.handleSearch(event)} fullWidth/>
+          
         </div>
         <Table >
           <TableHead>
@@ -190,9 +186,10 @@ class Tablelist extends React.Component{
         </Table>
         </Paper>
     </Grid>
-    <Dialog  open={this.state.open}  >
-    <Viewcontact contactsList={this.state.viewcontact} onclick={this.handleClose} open={this.state.open} onClick={this.handleClose}  />
+    <Dialog  open={this.state.open} onClose={this.handleClose}>
+    <Viewcontact contactsList={this.state.viewcontact} open={this.state.open}/>
     </Dialog>
+    
     </React.Fragment>
         )
     }

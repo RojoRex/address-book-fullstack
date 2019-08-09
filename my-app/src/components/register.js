@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core';
 import Icon from '../images/avatar.png'
 import Background from '../images/background.jpg'
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 
@@ -24,8 +25,7 @@ const signInstyle = {
     backgroundPosition: 'center',
     backgroundSize:'cover',
     backgroundImage: `url(${Background})`,
-    
-  },
+  },  
 
    'warning': {
     color: 'red',
@@ -138,15 +138,22 @@ handlesubmit(e){
     password:this.state.password
   })
   .then(res=>{
+    if( res.data.error==="Account already taken"){
+      alert('username already taken')
+    }else{
+    alert('account has been created')
     this.props.history.replace("/");
+  }
+  console.log(res)
   })
+
 }
 
 
 render(){
   const {classes}=this.props
  return (
-  <div className={classes.bG}>
+  
    <div className={classes.centerStyle}>
   
      <Grid
@@ -159,7 +166,7 @@ render(){
        >
        <img src={Icon} className={classes.imgs} alt=""/>
        <Paper  className={classes.signIn}>
-       <form onSubmit={this.handlesubmit}>
+       
         
         <Grid container spacing={2}>
         <Grid item xs={12} >
@@ -241,17 +248,26 @@ render(){
           
           <div className={classes.bBox}>
            <Button variant="contained" color="primary"  style={{backgroundColor:'#607C98' ,width:'500px',marginLeft:'35px'}} onClick={this.handlesubmit}>Create Account</Button>
+                    
+           <Grid container style={{marginTop:'10px'}}>
+            <Grid item style={{marginLeft:'170px'}}>
+              <Link to={'/'} variant="body2">
+                {"Have an account? Sign in"}
+              </Link>
+            </Grid>
+          </Grid>
+          
           </div>
           </Grid>
          
-       </form>
+      
        </Paper>
        
    </Grid>
   
    </div>
- </div>
- );
+
+ )
 }
 }
 

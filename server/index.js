@@ -7,6 +7,7 @@ const secret = require('../secret.js');
 
 const useraccount = require('./controllers/user.js');
 const adddressbook = require('./controllers/address.js');
+const group= require('./controllers/groups.js')
 
 
 massive({
@@ -32,6 +33,10 @@ massive({
   app.get('/api/data/:id', adddressbook.contactdata);
   app.delete('/api/delete/:id',adddressbook.deleteContact)
   app.patch('/api/update/:id',adddressbook.update_contactdata)
+
+  //group
+  app.post('/api/group/,',group.addnewGroup)
+
 
   app.get('/api/protected/data', (req, res) => {
     if (!req.headers.authorization) {

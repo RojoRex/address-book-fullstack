@@ -4,32 +4,43 @@ const secret = require('../../secret.js');
 
 function register(req, res) {
   const db = req.app.get('db');
-  const { lastname,firstname,username, password } = req.body;
 
-  argon2
-    .hash(password)
-    .then(hash => {
-      return db.users.insert(
-        {
-          lastname,
-          firstname,
-          username,
-          password: hash,
-        },
-        {
-          fields: ['id','lastname','firstname', 'username','password',],
-        }
-      );
-    })
-    .then(user => {
-      const token = jwt.sign({ userId: user.id }, secret);
-      res.status(201).json({ ...user, token });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).end();
-    });
+  const { lastname,firstname,username, password} = req.body;
+
+  db.users.findOne({
+      username: username
+  }).then( data =>{
+      if(data){
+          res.status(201).json({error:"Account already taken"});
+      } else {
+        argon2
+        .hash(password)
+        .then(hash => {
+          return db.users.insert(
+            {
+              lastname,
+              firstname,
+              username,
+              password: hash,
+            },
+            {
+              fields: ['id','lastname','firstname', 'username','password',],
+            }
+          );
+        })
+        .then(user => {
+          const token = jwt.sign({ userId: user.id }, secret);
+          res.status(201).json({ ...user, token });
+        })
+        .catch(err => {
+          console.error(err);
+          res.status(500).end();
+        });
+      }
+  })
 }
+
+
 
 function login(req, res) {
   const db = req.app.get('db');
